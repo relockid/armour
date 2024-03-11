@@ -19,20 +19,9 @@ Run service:
     docker pull relock/armour
     docker run -it relock/armour --host 172.72.0.1 --port 443
 
-You can install python package in the usual way using `pip`:
+This repository contains ready-to-use, minimal implementation of the producer server and the consumer for test purpose of re:lock Armour. This minimal implementation makes it easy to check how the failsafe-disconnect system works in practice.
 
-    pip install relock
-
-Typical request may look like this:
-
-    from relock import Armour
-
-    with Armour('172.72.0.1') as armour:
-        if ticket := armour.ticket():
-            if response := requests.get('https://awesome.api.com/secure/endpoint',
-                                        headers=ticket.headers()):
-                if ticket := armour.stamp(response):
-                    print(response.json())
+You can run the demo solution on one machine, as consumer and producer may use the same enclave for this purpose.
 
 Links
 -----
