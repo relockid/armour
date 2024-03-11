@@ -1,7 +1,7 @@
 Active API Armour
 =================
 
-The Active API Armour is an automated defense software, designed for APIs dealing with the most sensitive data. It allows developers to securely implement mutual authentication with entangled identity, real-time authorization, and end-to-end encryption with perfect forward secrecy, using just one, streamlined and fail-proof binary program.
+The Active API Armour is an automated defense software, designed for APIs dealing with the most sensitive data. It allows developers to securely implement mutual authentication with entangled identity, authorization, and end-to-end encryption with perfect forward secrecy, using just one, streamlined and fail-proof elegant binary program.
 
 The Armour reduces any room for errors in API security implementation and configuration, and completely eliminates the hassle and cost for key management.
 
@@ -17,7 +17,9 @@ Minimal example
 Run service:
 
     docker pull relock/armour
-    docker run -it relock/armour --host 172.72.0.1 --port 443
+    docker run --privileged --network host -it relock/armour run \
+           --host $(hostname).local --port 443 \
+           --multiprocessing
 
 GitHub repository
 -----------------
