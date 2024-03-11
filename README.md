@@ -19,6 +19,9 @@ Run service:
     docker pull relock/armour
     docker run -it relock/armour --host 172.72.0.1 --port 443
 
+GitHub repository
+-----------------
+
 This repository contains ready-to-use, minimal implementation of the producer server and the consumer for test purpose of re:lock Armour. This minimal implementation makes it easy to check how the failsafe-disconnect system works in practice.
 
 You can run the demo solution on one machine, as consumer and producer may use the same enclave for this purpose.
@@ -28,6 +31,6 @@ Links
 
 -   Docker: https://armour.relock.id/
 -   Documentation: https://armour.relock.id/
--   Source Code: https://github.com/relockid/armour
+-   Demo Source Code: https://github.com/relockid/armour
 -   Issue Tracker: https://github.com/relockid/armour/issues
 -   Website: https://relock.id/
