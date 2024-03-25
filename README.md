@@ -28,18 +28,18 @@ Python:
     from relock import TCP as Armour
 
     http = requests.Session()
-
-    armour = Armour(host=armour,
-                    port=aport,
-                    name=name,
+    armour = Armour(host='127.0.0.1',
+                    port=8111,
+                    name='Alice',
                     pool=1)
 
-    if response := http.get('http://' + host,
-                            headers={'Content-Type': 'application/json',
-                                      **arm.headers()},
-                            json={'time': arm.encrypt(time.time())}):
-        if ticket := arm.stamp(response.headers):
-            logging.info('Decrypted %s', arm.decrypt(response.json().get('time')))
+    with armour('<ticket>', '<api url>', 80) as arm:
+        if response := http.get('http://' + host,
+                                headers={'Content-Type': 'application/json',
+                                          **arm.headers()},
+                                json={'time': arm.encrypt(time.time())}):
+            if ticket := arm.stamp(response.headers):
+                logging.info('Decrypted %s', arm.decrypt(response.json().get('time')))
 
 
 GitHub repository
