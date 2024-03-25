@@ -16,9 +16,6 @@ from typing import Any
 logging.basicConfig(level=0)
 logging = logging.getLogger('cli.consumer.demo')
 
-""" Key distribution is problematic anyway, even not valid cerytficate
-	gives TLS encryption and it's worth to use it.
-"""
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 @click.option('--armour', is_flag=False, default=str(), help=('Host or IP of API armour.'))
@@ -30,7 +27,7 @@ requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.
 @click.option('--sleep', is_flag=False, default=0, help=('Pause between requests in miliseconds.'))
 @cli.command()
 def consumer(armour, aport, host, port, ticket, name, sleep):
-	""" API consumer demo - simple server with recurrent calls.
+	""" API consumer demo - simple server example.
 	"""
 	if aport == 443:
 		from app.client.http import HTTP as Armour

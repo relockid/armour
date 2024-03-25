@@ -18,9 +18,6 @@ from flask import Flask, request, Response
 
 from . import cli
 
-""" Key distribution is problematic, anyway even not CA valid cerytficate
-	provides an TLS encryption and it's worth to use it.
-"""
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)

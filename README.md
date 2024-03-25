@@ -34,7 +34,7 @@ Python:
                     pool=1)
 
     with armour('<ticket>', '<api url>', 80) as arm:
-        if response := http.get('http://' + host,
+        if response := http.get(arm.addr,
                                 headers={'Content-Type': 'application/json',
                                           **arm.headers()},
                                 json={'time': arm.encrypt(time.time())}):
