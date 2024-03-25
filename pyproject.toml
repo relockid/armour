@@ -1,0 +1,24 @@
+[project]
+name = "relock"
+version = "0.1.2"
+description = "Active API Armour TCP/HTTP client."
+authors = [
+  { name="Marcin Sznyra", email="marcin@relock.id" },
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+
+[project.urls]
+homepage = "https://github.com/relockid/armour"
+repository = "https://github.com/relockid/armour"
+docker = "https://hub.docker.com/r/relock/armour"
+
+[build-system]
+requires = ["requests>=2.31", "cryptography>=42.0.5", "setuptools"]
+build-backend = "setuptools.build_meta"

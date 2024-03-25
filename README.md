@@ -18,8 +18,29 @@ Run service:
 
     docker pull relock/armour
     docker run --privileged --network host -it relock/armour run \
-           --host $(hostname).local --port 443 \
+           --host 127.0.0.1 --port 8111 \
            --multiprocessing
+
+Python:
+
+    python3 -m pip install relock
+    
+    from relock import TCP as Armour
+
+    http = requests.Session()
+
+    armour = Armour(host=armour,
+                    port=aport,
+                    name=name,
+                    pool=1)
+
+    if response := http.get('http://' + host,
+                            headers={'Content-Type': 'application/json',
+                                      **arm.headers()},
+                            json={'time': arm.encrypt(time.time())}):
+        if ticket := arm.stamp(response.headers):
+            logging.info('Decrypted %s', arm.decrypt(response.json().get('time')))
+
 
 GitHub repository
 -----------------
@@ -31,7 +52,7 @@ You can run the demo solution on one machine, as consumer and producer may use t
 Links
 -----
 
--   Docker: https://armour.relock.id/
+-   Docker: https://hub.docker.com/r/relock/armour
 -   Documentation: https://armour.relock.id/
 -   Demo Source Code: https://github.com/relockid/armour
 -   Issue Tracker: https://github.com/relockid/armour/issues
