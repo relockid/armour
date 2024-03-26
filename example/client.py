@@ -1,3 +1,7 @@
+from gevent import monkey
+
+monkey.patch_all()
+
 import sys
 import signal
 import time
@@ -54,7 +58,7 @@ def run(armour, aport, host, port, ticket, name, sleep, force):
 				application. For production env it should be delivered in second 
 				channel e.g. identity provider or email.
 			"""
-			if response := http.get('http://' + host + '/ask',
+			if response := http.get(arm.addr + '/ask',
 									headers={'Content-Type': 'application/json'}):
 				if ticket := response.json().get('ticket'):
 					if armour.save(ticket):
@@ -67,7 +71,7 @@ def run(armour, aport, host, port, ticket, name, sleep, force):
 				2) send request to API server with encrypted payload,
 				3) stamp response and get decryption keys.
 			"""
-			if response := http.get('http://' + host,
+			if response := http.get(arm.addr,
 									headers={'Content-Type': 'application/json',
 											  **arm.headers()},
 									json={'time': arm.encrypt(time.time())}):
