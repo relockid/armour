@@ -56,4 +56,5 @@ Links
 -   Documentation: https://armour.relock.id/
 -   Demo Source Code: https://github.com/relockid/armour
 -   Issue Tracker: https://github.com/relockid/armour/issues
+-   Support channels: https://discord.gg/C8ReksJk
 -   Website: https://relock.id/
