@@ -28,11 +28,11 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 logging.basicConfig(level=0)
 logging = logging.getLogger('cli.server.demo')
 
-@click.option('--host', is_flag=False, default='0.0.0.0', help=('Host or IP. Default 0.0.0.0'))
-@click.option('--port', is_flag=False, default=80, help=('Port number. Default :80'))
+@click.option('--host', is_flag=False, default='0.0.0.0', help=('API server host or ip. Default 0.0.0.0'))
+@click.option('--port', is_flag=False, default=80, help=('API server port number. Default :80'))
 @click.option('--armour', is_flag=False, default='0.0.0.0', help=('Armour IP Default 0.0.0.0'))
-@click.option('--aport', is_flag=False, default=8111, help=('Port number. Default :8111'))
-@click.option('--private', is_flag=True, default=True, help=('Turn on private mode - require armour ticket\'s.'))
+@click.option('--aport', is_flag=False, default=8111, help=('Armour port number. Default :8111'))
+@click.option('--private', is_flag=True, default=True, help=('Turn on private mode. Default True.'))
 @click.option('--multiprocessing', is_flag=True, default=False, help=('Start multiprocessing mode.'))
 @click.option('--cpus', is_flag=False, default=0, help=('Number of cpus'))
 @cli.command()
@@ -58,7 +58,7 @@ def run(host, port, armour, aport, private, multiprocessing, cpus):
 			with armour() as arm:
 				if not arm.validate(request.path, request.headers, request.remote_addr):
 					logging.error('Unauthorized request from %s.', request.remote_addr)
-					return Response('Unauthorized', status=401)
+					return 'Unauthorized', 401
 
 		@app.route("/")
 		def index():
@@ -66,7 +66,6 @@ def run(host, port, armour, aport, private, multiprocessing, cpus):
 				if request.json.get('time') if request.is_json else None:
 					logging.info('Decrypted %s', arm.decrypt(request.json.get('time')))
 				return {"time": arm.encrypt(time.time())}
-			return {"time": None}
 
 		@app.route("/enclave")
 		def enclave():
@@ -80,17 +79,18 @@ def run(host, port, armour, aport, private, multiprocessing, cpus):
 		def ask():
 			with armour() as arm:
 				if ticket := arm.ask():
+					logging.info('Ticket issue for %s', request.remote_addr)
 					return {'ticket': str(ticket)}
 
 		@app.after_request
 		def after_request(response):
 			with armour() as arm:
-				response = arm.finalize(response)
+				arm.finalize(response)
 			return response
 
 		return app
 
-	logging.info('Simple producer server at %s:%s starting...', host, port)
+	logging.info('Simple server at %s:%s starting...', host, port)
 
 	class devnull:
 		write = lambda _: None
@@ -110,5 +110,20 @@ def run(host, port, armour, aport, private, multiprocessing, cpus):
 			Process(target=spawn, args=(listener, host, port, armour, aport, private), name='App[%s]' % x).start()
 	spawn(listener, host, port, armour, aport, private)
 
+@cli.command()
+def tcp():
+	""" Run server on localhost:80 with armour TCP settings
+	"""
+	return run.callback('127.0.0.1', 80, '127.0.0.1', 8111, True, True, 0)
+
+@cli.command()
+def http():
+	""" Run server on localhost:80 with armour HTTPs settings
+	"""
+	return run.callback('127.0.0.1', 80, '127.0.0.1', 443, True, True, 0)
+
 if __name__ == "__main__":
+	#
+	# python3 server.py --help
+	#
 	cli()
